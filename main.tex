@@ -1,0 +1,196 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage{longtable,booktabs,array,tabularx,graphicx,xcolor,hyperref,fancyhdr,enumitem,float,amssymb,xurl,needspace}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!45!black}
+\setlength{\floatsep}{7pt}\setlength{\textfloatsep}{7pt}\setlength{\intextsep}{7pt}
+\setlength{\headheight}{15pt}\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\renewcommand{\contentsname}{İçindekiler}
+\renewcommand{\figurename}{Şekil}
+\renewcommand{\tablename}{Tablo}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}\fancyhf{}\lhead{Masalname}\rhead{Vize Raporu}\cfoot{\thepage}
+\newcommand{\need}[1]{\textcolor{red!65!black}{\textbf{[DOLDURULACAK: #1]}}}
+\begin{document}
+\begin{titlepage}\centering
+\vspace*{2cm}
+{\large İstanbul Medipol Üniversitesi\\ Güzel Sanatlar, Tasarım ve Mimarlık Fakültesi\\ Görsel İletişim Tasarımı\par}
+\vspace{1.8cm}
+{\Huge\bfseries Masalname\par}\vspace{.4cm}
+{\Large Türk Masalları Derlemesi Web Sayfası\par}\vspace{.6cm}{\Large Vize Raporu\par}
+\vspace{1.5cm}
+{\large Ders: Programlamaya Giriş\\ Öğretim Üyesi: Meral Şentürk\\ Hazırlayan: Gamze Gülboy\\ Öğrenci No: 86230031\par}
+\vfill
+\textbf{Proje bağlantıları}\par
+GitHub: \url{https://github.com/Gamzegulboy/Masalname}\par
+YouTube: \url{https://youtu.be/fQR0D-7Fplk}\par
+\vspace{1cm}6 Kasım 2026\par
+\end{titlepage}
+\tableofcontents\clearpage
+\section{Giriş}
+Bu projede Türk masallarını tek bir web sayfası üzerinde toplamak ve kullanıcıların masallara kolay ulaşmasını sağlamak amaçlanmıştır. Masalname adlı çalışmada geleneksel masal kitabı hissi, büyülü bir atmosferle birleştirilmiştir. İçerikte on masal bulunmaktadır. Web sayfası tek bir \texttt{index.html} dosyasından oluşur. Tasarım kodları \texttt{style}, etkileşim kodları \texttt{script} etiketinde tutulmuştur. Kapak görselleri dosyanın içine gömülerek sayfanın çevrimdışı açılması hedeflenmiştir. Arama, filtreleme, favoriler ve okuma ayarlarıyla siteyi yalnızca görsel bir vitrin olmaktan çıkarıp kullanılabilir bir dijital masal koleksiyonuna dönüştürdüm. Bu raporda içerik seçimini, tasarım kararlarını, programlama yaklaşımını, yapay zekâ kullanımını ve doğrulanmış testleri açıkladım.
+\subsection{Proje Özeti}
+Masalname, 10 Türk masalının ayrı kapak görselleriyle sunulduğu bir dijital masal koleksiyonudur. Kullanıcılar masal arayabilir, kategorilere göre filtreleme yapabilir, masalları favorilere ekleyebilir ve okuma ekranındaki kişisel ayarları değiştirebilir. İçerik ve görseller tek HTML dosyasının içerisinde bulunduğu için sayfa çevrimdışı olarak da açılabilir.
+\subsection{Gereksinimlerin Karşılanması}
+\par\medskip\noindent\begin{tabularx}{\textwidth}{@{}Xl@{}}\toprule Gereksinim & Durum \\ \midrule
+10 Türk masalı & Karşılandı \\
+Tek HTML dosyası & Karşılandı \\
+İçsel CSS (\texttt{<style>}) & Karşılandı \\
+İçsel JavaScript (\texttt{<script>}) & Karşılandı \\
+İnternetsiz açılma yapısı & Karşılandı \\
+Anlamlı JavaScript özellikleri & Karşılandı \\
+Masal kaynaklarının belirtilmesi & Karşılandı \\
+Duyarlı tasarım & Karşılandı \\
+\bottomrule\end{tabularx}
+\section{Masalların Seçimi}
+Seçkide Keloğlan, olağanüstü olaylar, gizem, duygusal anlatı ve hayvan karakterler gibi farklı temalara yer vermeye çalıştım. Aşağıdaki sınıflandırmalar web arayüzündeki filtreleme kategorileridir; akademik tür sınıflandırması iddiası taşımaz. Masalların yararlandığım kaynaklarını raporun Kaynakça bölümünde belirttim.
+\small\begin{longtable}{@{}p{.06\textwidth}p{.35\textwidth}p{.17\textwidth}p{.32\textwidth}@{}}\toprule No & Masal & Tür / tema & Seçilme nedeni \\ \midrule\endfirsthead\toprule No & Masal & Tür / tema & Seçilme nedeni \\ \midrule\endhead
+1 & Keloğlan ve Altın Bülbül & Keloğlan & Keloğlan karakteri ve fantastik yolculuk \\ 
+2 & Tuz Kadar Sevgi & Duygusal & Duygusal anlatı ve aile ilişkileri \\ 
+3 & Kırkıncı Oda & Gizemli & Gizemli mekân ve merak öğesi \\ 
+4 & Üç Turunçlar & Büyülü & Büyülü olaylar ve Anadolu masal motifi \\ 
+5 & Değirmenci ile Tilki & Hayvanlar & Hayvan kahramanlar ve çeşitlilik \\ 
+6 & Nardaniye Hanım & Gizemli & Kadın karakter ve gizemli anlatı \\ 
+7 & Keloğlan ile Yılan, Köpek, Kedi ve Balık & Hayvanlar & Keloğlan ve hayvanların bir arada oluşu \\ 
+8 & İncili Çadır & Büyülü & Nesne ve mekânın anlatıdaki rolü \\ 
+9 & Korkak Adam ve Devler & Gizemli & Dev motifi ve gerilim öğeleri \\ 
+10 & Peri Kızı & Büyülü & Peri motifi ve olağanüstü olaylar \\ 
+\bottomrule\end{longtable}\normalsize
+\section{Tasarım Kararları}
+\subsection{Konuya Uygunluk}
+Masalname'nin görsel kimliğini oluştururken geleneksel resimli masal kitaplarını ve fantastik masal dünyasını bir arada düşündüm. Açılış ekranında orman siluetleri, yıldızlar, ay ve altın kuş figürüyle bu atmosferi güçlendirdim. Her masala ait ayrı kapaklar kullanarak kartların aynı koleksiyona ait görünmesini, bunun yanında hikâyeleri birbirinden ayırmasını amaçladım. Arayüzde ayrıntı seviyesi yüksek bir giriş sayfasıyla daha sakin bir okuma ekranı arasında denge kurdum; görsellerin masal okumayı zorlaştırmasını istemedim.
+\subsection{Renk Paleti ve Yazı Tipi}
+\par\medskip\noindent\begin{tabularx}{\textwidth}{@{}l l X@{}}\toprule Ad & Kod / aile & Kullanım gerekçesi \\ \midrule
+Gece mavisi & \texttt{\#112936} & Orman ve gece atmosferi; ana açılış alanı \\
+Bordo & \texttt{\#7d3445} & Favori işaretleri ve belirli vurgu alanları \\
+Altın & \texttt{\#dbb77d} & Butonlar, yıldızlı ayrıntılar ve masalsı vurgu \\
+Kâğıt kremi & \texttt{\#f5ecd9} & Koleksiyon ve okuma arayüzündeki sıcak zemin \\
+Georgia & Serif & Masal başlıklarında geleneksel kitap hissi \\
+Trebuchet MS & Sans-serif & Araçlar, menü ve açıklamalarda okunabilirlik \\
+\bottomrule\end{tabularx}
+\subsection{Okunabilirlik, Gezinme ve Duyarlı Tasarım}
+Uzun masal metinlerinin rahat okunabilmesi için metin alanını geniş ekranın tamamına yaymadım; yeterli satır aralığı, tutarlı paragraf boşluğu ve zemin--metin karşıtlığı kullandım. Kullanıcı, A+ ve A-- düğmeleriyle yazı boyutunu değiştirebiliyor; gece ve gündüz görünümü arasında geçebiliyor. Masal arama alanı, kategori filtreleri ve favoriler, istenen hikâyeye ulaşmayı kolaylaştırıyor. Kart düzeninde CSS Grid kullandım: geniş ekranda dört sütun bulunurken daha dar ekranlarda üç ve iki sütuna geçiliyor. Mobil görünümde menü öğeleri ve arama alanları daha kompakt düzenleniyor. Başlık, renk, köşe yuvarlaklığı ve boşlukların ortak bir görsel dilde kalmasına dikkat ettim.
+\subsection{Ekran Görüntüleri}
+Aşağıda sitenin açılış sayfası, masal kartları, okuma ekranı ve mobil düzeni birlikte gösterilmiştir.
+\begin{figure}[H]\centering
+\begin{minipage}[t]{.48\textwidth}\centering
+\includegraphics[width=\linewidth]{hero_clean.png}\\{\small (a) Açılış ekranı}
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}\centering
+\includegraphics[width=\linewidth]{reader_clean.png}\\{\small (b) Okuma ekranı}
+\end{minipage}
+\vspace{.25cm}
+\begin{minipage}[t]{.48\textwidth}\centering
+\includegraphics[height=8cm,keepaspectratio]{covers_all.png}\\{\small (c) 10 masal kapağı}
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}\centering
+\includegraphics[height=8cm,keepaspectratio]{mobile_covers.png}\\{\small (d) Mobil görünüm}
+\end{minipage}
+\caption{Masalname web sitesinden seçilmiş gerçek ekran görüntüleri.}
+\end{figure}
+\section{Gerçekleştirme}
+\subsection{HTML Yapısı}
+Projeyi tek bir \texttt{index.html} dosyasında geliştirdim. \texttt{head} bölümünde dil, karakter kodlaması, ekran genişliği ve sayfa açıklaması bulunuyor. Kullanıcının gördüğü içerikler \texttt{body} içerisinde yer alıyor: \texttt{header} açılış ekranını ve gezinme menüsünü, \texttt{main} masal koleksiyonunu, \texttt{section} okuma ekranını, \texttt{footer} proje açıklamalarını oluşturuyor. Kaynakları göstermek için \texttt{dialog}, kullanıcı işlemleri için \texttt{button} ve \texttt{input} etiketleri kullanıldı. Kartların içerikleri JavaScript'teki masal verilerinden oluşturulduğu için HTML içinde her kartı ayrı ayrı yazmam gerekmedi.
+\subsection{İçsel CSS}
+CSS kodlarını HTML içerisindeki \texttt{<style>} etiketine yerleştirdim. \texttt{:root} altında renk ve tipografi değişkenleri bulunuyor. Masal kartları CSS Grid ile, menü ve kontrol alanları Flexbox ile yerleştiriliyor. \texttt{@media} kuralları, ekran daraldığında kart sütunlarını ve aralıkları düzenliyor. Gündüz ve gece görünümünde renkler birlikte değiştiği için sayfanın bütünlüğü korunuyor. Aşağıdaki kod, gerçek site düzeninden kısa bir örnektir:
+\begin{verbatim}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:525px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+\end{verbatim}
+\subsection{İçsel JavaScript}
+Masalların kimlik, başlık, kategori, açıklama, metin, görsel ve kaynak bilgileri \texttt{STORIES} dizisinde saklanıyor. \texttt{renderCards()} fonksiyonu kullanıcının arama ve filtre seçimlerine göre gösterilecek kartları belirliyor. \texttt{toggleFavorite(id)} fonksiyonu favori durumunu değiştiriyor; tercihler \texttt{localStorage} ile aynı tarayıcıda saklanıyor. Bir masal seçildiğinde okuma ekranına ilgili metin aktarılıyor; tema, yazı boyutu ve ilerleme çubuğu JavaScript olaylarıyla güncelleniyor. Aşağıdaki kod, favori işlevinin önemli bir kısmıdır:
+\begin{verbatim}
+function toggleFavorite(id){
+  if(state.favorites.has(id)){
+    state.favorites.delete(id)
+  }else{
+    state.favorites.add(id)
+  }
+  storage.set('favorites',[...state.favorites]);
+  renderCards(); updateReaderFavorite()
+}
+\end{verbatim}
+\subsection{Sayfanın Özellikleri}
+Masalname'de 10 masal kartı ve her masala özel bir kapak görseli yer alıyor. Kullanıcılar masalları başlık ve tema üzerinden arayabiliyor, kategorilere göre süzebiliyor, favorilere ekleyebiliyor ve sürpriz masal özelliğini kullanabiliyor. Okuma ekranında önceki/sonraki masala geçme, yazı boyutunu ayarlama, gece/gündüz görünümü, okuma yüzdesini takip etme ve son masala dönme seçenekleri bulunuyor. Bu işlevleri sayfanın görsel tasarımına ek olarak gerçek kullanıcı ihtiyaçlarını karşılamak için planladım.
+\section{Yapay Zekâ Kullanımı}
+Hocamızın izin verdiği kapsamda kod düzenleme ve görsel üretimi için yapay zekâ araçlarından destek aldım. Kullanılan araçlar ve istemlerin kısa özeti aşağıdadır.
+\par\medskip\noindent\begin{tabularx}{\textwidth}{@{}p{.16\textwidth}p{.20\textwidth}Xp{.18\textwidth}@{}}\toprule Araç & Kullanım amacı & İstem (prompt) özeti & Kullanıldığı alan \\ \midrule
+ChatGPT & Kod, metin ve hata düzenleme & Tek dosyada çalışan; arama, filtre, favori ve okuma ayarları bulunan özgün masal sitesi & HTML, CSS, JavaScript, metinler \\
+Gemini & Görsel üretimi & Her masalın karakterlerine ve atmosferine uygun, tutarlı illüstrasyon dili & Kapak ve görsel çalışmaları \\
+\bottomrule\end{tabularx}
+\subsection{Anladığım ve Kendim Yaptığım Kısımlar}
+Projenin tasarım yönünü belirlerken geleneksel kitap dokusuyla büyülü bir masal atmosferini birleştirmeye karar verdim. Renk seçimlerini, ana sayfanın yerleşimini ve masal kapaklarının birbiriyle uyumunu değerlendirdim. Kullanıcının hangi düğmeye nereden erişeceğini düşünerek gezinme düzenini gözden geçirdim. Örneğin iki favori düğmesinin aynı işlemi yaptığını fark ettim ve bu tekrarı kaldırdım; ana sayfaya dönme düğmesinin yalnızca okuma ekranında olmasını istedim. Düzenlemeden sonra masallar açılmayınca ilgili JavaScript bağlantısındaki hata giderildi ve sayfa yeniden denendi. Böylece HTML'nin yapıyı, CSS'nin görünümü, JavaScript'in ise etkileşimleri nasıl yönettiğini uygulamalı olarak gözlemledim.
+\section{Haftalık Katkılar}
+Dersin ilk iki haftasında ve 7. haftasında ders içi katılım gösterdim. 3., 4., 5., 6. ve 8. haftalarda ise ders konularını telafi çalışmalarıyla takip ettim. Aşağıda ders çalışmalarıma ait ekran görüntülerinden seçtiğim örnekler bulunmaktadır.
+\newcommand{\hafta}[5]{\Needspace{7\baselineskip}\subsection*{#1. hafta --- #2}#3\\\textbf{Commit:} #4\\#5\par}
+\hafta{1}{Ders içinde katılım}{Temel HTML etiketlerini kullanarak başlık, paragraf ve bağlantılar içeren sayfa yapısını çalıştım. Kodla tarayıcı çıktısını karşılaştırdım.}{Ayrı haftalık commit yok.}{$\boxtimes$ Ders içinde katılım sergiledim \quad $\square$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta1a.png}\caption{1. haftadaki HTML alıştırması.}\end{figure}
+\hafta{2}{Ders içinde katılım}{HTML içeriğinin düzenlenmesi ve CSS ile biçimlendirilmesine yönelik örnekler yaptım. Başlık ve metin yerleşimindeki değişiklikleri inceledim.}{Ayrı haftalık commit yok.}{$\boxtimes$ Ders içinde katılım sergiledim \quad $\square$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta1b.png}\caption{2. haftadaki sayfa düzeni çalışması.}\end{figure}
+\hafta{3}{Telafi}{HTML sayfa bölümlerini tekrar ederek kodun tarayıcı ön izlemesini kontrol ettim. Yaptığım değişikliklerin sayfaya nasıl yansıdığını inceledim.}{Ayrı haftalık commit yok.}{$\square$ Ders içinde katılım sergiledim \quad $\boxtimes$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta3c.png}\caption{3. hafta telafi çalışması.}\end{figure}
+\hafta{4}{Telafi}{CSS ile yerleşim ve hizalama örneklerini çalıştım. Kod değişikliklerini ekrandaki görünümle karşılaştırdım.}{Ayrı haftalık commit yok.}{$\square$ Ders içinde katılım sergiledim \quad $\boxtimes$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta4a.png}\caption{4. hafta telafi çalışması.}\end{figure}
+\hafta{5}{Telafi}{Sayfa düzeni, renk ve görsel yerleşimi üzerinde alıştırmalar yaptım. Ekran görüntüleri üzerinden farklı düzenlemeleri değerlendirdim.}{Ayrı haftalık commit yok.}{$\square$ Ders içinde katılım sergiledim \quad $\boxtimes$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta5b.png}\caption{5. hafta telafi çalışması.}\end{figure}
+\hafta{6}{Telafi}{JavaScript ile buton etkileşimi ve renk değiştirme örneklerini çalıştım. Kullanıcı hareketinin ekranda nasıl sonuç oluşturduğunu gözlemledim.}{Ayrı haftalık commit yok.}{$\square$ Ders içinde katılım sergiledim \quad $\boxtimes$ Telafi yaptım}
+\begin{figure}[H]\centering\includegraphics[width=.39\textwidth]{hafta6c.png}\caption{6. hafta JavaScript telafi çalışması.}\end{figure}
+\hafta{7}{Ders içinde katılım}{Bu hafta derse katıldım. HTML, CSS ve JavaScript konularını, önceki haftalardaki uygulamalarla ilişkilendirerek tekrar ettim.}{Ayrı haftalık commit yok.}{$\boxtimes$ Ders içinde katılım sergiledim \quad $\square$ Telafi yaptım}
+\hafta{8}{Telafi}{Ders dışında Masalname'nin arama, favoriler, masal okuma ve görünüm özelliklerini gözden geçirdim. Masalname'nin özelliklerini yeniden deneyerek son kontrolleri yaptım.}{\href{https://github.com/Gamzegulboy/Masalname/commit/dca091ab8d03bf34352220d59e7f4d0377267086}{Masalname web sitesi ilk sürümü}.}{$\square$ Ders içinde katılım sergiledim \quad $\boxtimes$ Telafi yaptım}
+\section{Test ve Değerlendirme}
+Masalname'yi Chromium/Chrome tarayıcısında 1440 px masaüstü ve 390 px dar ekran genişliklerinde denedim. Masal kartlarının görünümünü, arama ve kategori sonuçlarını, okuma ekranını, yazı büyüklüğünü ve görünüm değişimini kontrol ettim. Favori ve okuma tercihlerinin kaydedilmesi de değerlendirmeye alındı. Dar ekran kontrolü tarayıcı üzerinden yapıldı.
+\par\medskip\noindent\begin{tabularx}{\textwidth}{@{}Xll@{}}\toprule Özellik & Masaüstü & Dar ekran \\ \midrule
+10 masal kartı ve kapaklar & Başarılı & Başarılı \\
+Masal arama ve filtreleme & Başarılı & Başarılı \\
+Favoriler ve yeniden açma & Başarılı & Başarılı \\
+Masal okuma, yazı ve tema & Başarılı & Başarılı \\
+Okuma ilerlemesi ve devam & Başarılı & Başarılı \\
+Tek HTML dosyasıyla kullanım & Başarılı & Başarılı \\
+\bottomrule\end{tabularx}
+\section{Sunum Videosu}
+\textbf{Video süresi:} 10:00.\\
+\textbf{Görünürlük:} Listelenmemiş.\\
+\textbf{Video bağlantısı:} \url{https://youtu.be/fQR0D-7Fplk}
+\subsection{Video Kontrol Listesi}
+\begin{itemize}[leftmargin=*]
+\item $\square$ Video süresi 12--18 dakika aralığında.
+\item $\square$ Sunum boyunca kameram açık, yüzüm görünüyor.
+\item $\boxtimes$ Video Listelenmemiş görünürlükte.
+\item $\boxtimes$ Bağlantı gizli pencerede açılıyor.
+\item $\boxtimes$ YouTube videoyu işlemeyi tamamladı.
+\item $\boxtimes$ Videoyu ses ve görüntü bakımından baştan sona izledim.
+\item $\boxtimes$ Kapaktaki YouTube bağlantısı ile bu bölümdeki bağlantı aynı.
+\end{itemize}
+\section{Sonuç ve Kendi Değerlendirmem}
+Bu proje sayesinde tasarımını yaptığım bir web sitesinin kod tarafının nasıl çalıştığını daha iyi anladım. HTML, CSS ve JavaScript'i tek bir sayfada birlikte kullanmayı deneyimledim. En çok farklı özellikleri sorunsuz çalıştırmakta zorlandım. Özellikle bir düğmeyi kaldırdıktan sonra ona bağlı JavaScript kodunun da düzenlenmesi gerektiğini öğrendim. Yaşadığım hataları sayfayı tekrar açarak ve işlevleri deneyerek çözmeye çalıştım. Tasarımda yalnızca güzel görünümü değil, okunabilirliği ve gezinme kolaylığını da önemsedim. İleride yeni masallar ekleyerek ve farklı okuma seçenekleri geliştirerek Masalname'yi büyütmek isterim.
+\section{Kaynakça}
+\begin{enumerate}\sloppy
+\item Keloğlan ve Altın Bülbül: \url{https://kulturportali.gov.tr/portal/keloglanvealtinbulbulmasali}
+\item Tuz Kadar Sevgi: \url{https://www.masaldergisi.com/sayilar/2025/sayi-28/tuz-kadar-sevgi/}
+\item Kırkıncı Oda: \url{https://www.okuryazar.com.tr/dergi/kirkinci-oda}
+\item Üç Turunçlar: \url{https://dergipark.org.tr/tr/pub/mahder/article/1738001}
+\item Değirmenci ile Tilki: \url{https://www.corum.bel.tr/public/uploads/2023/05/c-orum-masallari-2021.pdf}
+\item Nardaniye Hanım: \url{https://www.okuryazar.com.tr/dergi/nardaniye-hanim}
+\item Keloğlan ile Yılan, Köpek, Kedi ve Balık: \url{https://www.kulturportali.gov.tr/portal/keloglanileyilankopekkedivebalik}
+\item İncili Çadır: \url{https://www.kulturportali.gov.tr/portal/incilicadir}
+\item Korkak Adam ve Devler: \url{https://www.kulturportali.gov.tr/portal/korkakadamvedevler}
+\item Peri Kızı: \url{https://www.kulturportali.gov.tr/mrepo/eKitap/eb-Maddi%20Kultur/157/}
+\item MDN Web Docs: HTML, CSS, JavaScript ve Web Storage belgeleri. \url{https://developer.mozilla.org/}
+\item GitHub proje deposu: \url{https://github.com/Gamzegulboy/Masalname}
+\end{enumerate}
+\appendix\section{Teslim Kontrol Listesi}
+\begin{itemize}[leftmargin=*,label={}]
+\item $\boxtimes$ MEBİS'e yalnızca rapor PDF'i yükleyeceğim.
+\item $\boxtimes$ PDF adı \texttt{86230031\_GamzeGulboy\_vize.pdf}.
+\item $\boxtimes$ GitHub ve YouTube bağlantıları PDF'ye eklendi.
+\item $\boxtimes$ GitHub'da HTML, README, rapor PDF'i ve LaTeX kaynakları bulunuyor.
+\item $\boxtimes$ GitHub deposu öğretim üyesinin erişimine açık.
+\item $\boxtimes$ Son sürümün teslimden önce GitHub'a yüklenmesi.
+\item $\boxtimes$ Site içsel CSS ve içsel JavaScript kullanıyor.
+\item $\boxtimes$ Hazır web sitesi şablonu kullanmadım; yapay zekâ kullanımını açıkladım.
+\item $\boxtimes$ Çalışmanın mantığını sunumda açıkladım.
+\end{itemize}
+\end{document}
