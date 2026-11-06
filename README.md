@@ -27,12 +27,20 @@ HTML, içsel CSS ve içsel JavaScript. Harici web sitesi şablonu ve çevrimiçi
 
 ## Kaynaklar ve yapay zekâ kullanımı
 
-Masalların kaynak bilgileri web sayfasında ve hazırlanacak LaTeX raporunun kaynakça bölümünde gösterilir. Kod ve görsel üretiminde yapay zekâ desteği kullanılmıştır; kullanımlar ve geliştirme/test süreci raporda açıklanacaktır.
+Masalların kaynak bilgileri web sayfasında ve LaTeX raporunun kaynakça bölümünde gösterilir. Kod ve görsel üretiminde yapay zekâ desteği kullanılmıştır; kullanımlar ve geliştirme/test süreci raporda açıklanmıştır.
 
 ## Sunum videosu
 
-YouTube bağlantısı sunum kaydı tamamlandığında buraya eklenecektir.
+[Masalname vize sunum videosu](https://youtu.be/fQR0D-7Fplk)
+
+Doğrudan bağlantı: https://youtu.be/fQR0D-7Fplk
+
+## Rapor dosyaları
+
+- `86230031_GamzeGulboy_vize.pdf`: Vize raporu
+- `main.tex`: LaTeX raporunun düzenlenebilir kaynağı
+- `.png` görseller: LaTeX raporunun kullandığı ekran görüntüleri ve haftalık çalışmalar
 
 ## Proje durumu
 
-Web sayfasının ilk çalışan sürümü hazırdır. Teslimden önce kaynak doğrulaması, masaüstü/mobil testleri, LaTeX raporu ve video sunumu tamamlanacaktır.
+Masalname'nin web sitesi, raporu ve sunum bağlantısı bu depoda paylaşılmaktadır.
